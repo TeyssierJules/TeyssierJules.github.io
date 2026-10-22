@@ -25,15 +25,16 @@ Puis ouvrir http://localhost:5500.
 - `cv/` : `cv-jules-teyssier.pdf` (FR) et `cv-jules-teyssier-en.pdf` (EN), versions **sans téléphone**,
   copiées depuis `../CV/export/*-sans-telephone.pdf`. Recopier après chaque mise à jour du CV.
 
-## Après l'hébergement
+## En ligne
 
-Les balises Open Graph (`og:image`) doivent pointer vers une URL absolue pour que LinkedIn
-affiche l'aperçu. Dans les deux fichiers, remplacer `img/og.png` / `../img/og-en.png` par
-`https://<ton-domaine>/img/og.png` et `https://<ton-domaine>/img/og-en.png`.
+Site publié sur **https://teyssierjules.github.io/** (GitHub Pages, dépôt public
+`TeyssierJules/TeyssierJules.github.io`, branche `main`). Les URL absolues (canonical,
+hreflang, og:url, og:image) pointent vers cette adresse : à changer si un nom de domaine
+est ajouté plus tard.
 
-Même chose pour les deux balises `<link rel="alternate" hreflang="…">` en haut de chaque page :
-Google exige des URL absolues (`https://<ton-domaine>/` et `https://<ton-domaine>/en/`).
-C'est le seul point encore signalé par l'audit Lighthouse (SEO 90 → 100 une fois corrigé).
+Mettre à jour : copier le contenu de ce dossier `site/` dans une copie du dépôt, puis
+`git add -A`, `git commit` et `git push` ; GitHub republie en 1 à 2 minutes.
+Les commits utilisent l'email anonyme GitHub (`…@users.noreply.github.com`).
 
 ## Ajouter des illustrations à un projet
 
