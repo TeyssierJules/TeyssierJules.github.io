@@ -13,9 +13,8 @@ import Lenis from 'lenis';
 
 gsap.registerPlugin(ScrollTrigger);
 const FILM = new URLSearchParams(location.search).has('film');
-// Réglage « réduire les animations » du système : ignoré pour l'instant, comme sur l'ancien site
-// (choix de Jules ; son propre Windows l'active, ce qui coupait toute l'animation).
-// Passer à true pour le respecter : plus de défilement amorti ni de construction de la pièce.
+// Réglage « réduire les animations » du système : ignoré pour l'instant (sinon le défilement amorti
+// et la construction de la pièce sont coupés). Passer à true pour le respecter.
 const RESPECT_REDUCED_MOTION = false;
 const reduceMotion = RESPECT_REDUCED_MOTION && matchMedia('(prefers-reduced-motion: reduce)').matches;
 const mobile = () => innerWidth <= 900;
@@ -37,7 +36,7 @@ const sections = [...document.querySelectorAll('.page')];
 const navLinks = [...document.querySelectorAll('.top__nav a')];
 
 // ---------- défilement ----------
-const lenis = FILM || reduceMotion ? null : new Lenis({ lerp: 0.24 })   // même réglage que room.bokoko33.me : le défilement colle à la molette;
+const lenis = FILM || reduceMotion ? null : new Lenis({ lerp: 0.24 });   // amorti léger : le défilement reste collé à la molette
 if (lenis) {
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((t) => lenis.raf(t * 1000));
@@ -180,7 +179,7 @@ const loader = new GLTFLoader(); loader.setDRACOLoader(draco);
 const aoTex = NEW_LOOK && renderer ? new THREE.TextureLoader().load(new URL('../models/chambre-ao.webp', import.meta.url).href) : null;
 if (aoTex) { aoTex.channel = 1; aoTex.flipY = false; aoTex.colorSpace = THREE.NoColorSpace; }
 const aoMats = new Map();   // une copie de matériau par matériau d'origine, avec l'occlusion
-// sol et murs : leurs ombres cuites viennent des objets, elles apparaissent à mesure que les objets se posent
+// sol et murs : leurs ombres cuites viennent des objets, elles n'apparaissent qu'une fois les objets posés
 const shellAo = new Set();
 let aoLevel = 0;
 if (renderer) loader.load(new URL('../models/chambre.glb', import.meta.url).href, (gltf) => {
@@ -323,7 +322,6 @@ function buildTimeline() {
     const p = POSES[keyOf(sections[i])] || POSES.accueil;
     const m = mobile();
     const f = (m ? null : FOCI[p.focus]) || FOCI.piece;   // téléphone : toujours la pièce entière
-    // téléphone : la pièce est cadrée dans la « fenêtre » en haut de chaque section (au-dessus du rideau de texte)
     return {
       fx: f.x, fy: f.y, fz: f.z, rot: p.rot, elev: p.elev, night: p.night || 0,
       offX: m ? 0 : p.offX,
