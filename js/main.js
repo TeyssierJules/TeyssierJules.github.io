@@ -180,6 +180,8 @@ const loader = new GLTFLoader(); loader.setDRACOLoader(draco);
 const aoTex = NEW_LOOK && renderer ? new THREE.TextureLoader().load(new URL('../models/chambre-ao.webp', import.meta.url).href) : null;
 if (aoTex) { aoTex.channel = 1; aoTex.flipY = false; aoTex.colorSpace = THREE.NoColorSpace; }
 const aoMats = new Map();   // une copie de matériau par matériau d'origine, avec l'occlusion
+// sol et murs : leurs ombres cuites viennent des objets, elles apparaissent à mesure que les objets se posent
+const shellAo = new Set();
 if (renderer) loader.load(new URL('../models/chambre.glb', import.meta.url).href, (gltf) => {
   const root = gltf.scene;
   pivot.add(root);
@@ -215,6 +217,7 @@ if (renderer) loader.load(new URL('../models/chambre.glb', import.meta.url).href
       if (aoTex && merged.attributes.uv1) {
         if (!aoMats.has(mat)) { const c = mat.clone(); c.aoMap = aoTex; c.aoMapIntensity = 1.0; aoMats.set(mat, c); }
         useMat = aoMats.get(mat);
+        if (key === 'shell') { useMat = useMat.clone(); useMat.aoMapIntensity = P.build >= 1 ? 1 : 0; shellAo.add(useMat); }
       }
       const mesh = new THREE.Mesh(merged, useMat);
       mesh.castShadow = mesh.receiveShadow = true;
@@ -529,12 +532,13 @@ function renderFrame(dt = 0.016) {
   for (const m of emissiveMats) { const [d, nn] = EMISSIVE[m.name]; m.emissiveIntensity = lerp(d, nn, n); }
 
   // construction de la pièce, survol, petit saut de la tortue
-  let moved = false;
+  let moved = false, landed = 0, count = 0;
   ORDER.forEach((key, i) => {
     const g = groups.get(key); if (!g) return;
     const start = key === 'shell' ? 0 : 0.12 + (i - 1) * 0.062;
     const p = Math.min(Math.max((P.build - start) / 0.28, 0), 1);
     const drop = key === 'shell' ? 0 : 1 - backOut(p);
+    if (key !== 'shell') { landed += p; count++; }
     const lift = lerp(g.lift, key === hovered ? 0.05 : 0, 1 - Math.exp(-dt * 12));
     const y = drop * 2.6 + lift + Math.sin(g.hop * Math.PI) * 0.12;
     if (Math.abs(y - g.node.position.y) > 1e-4) moved = true;
@@ -542,6 +546,9 @@ function renderFrame(dt = 0.016) {
     g.node.visible = key === 'shell' || p > 0;
     if (key === 'shell') g.node.scale.setScalar(0.85 + 0.15 * Math.min(P.build / 0.12, 1));
   });
+  // ombres cuites du sol et des murs : nulles avant la chute, complètes quand tout est posé
+  const ao = count ? Math.pow(landed / count, 1.6) : 1;
+  for (const m of shellAo) m.aoMapIntensity = ao;
   if (turtle) {
     // la tortue se promène lentement au fond de l'aquarium (pas d'ombre : rien à recalculer)
     const tt = performance.now() / 1000;
