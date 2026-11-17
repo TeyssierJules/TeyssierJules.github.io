@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://teyssierjules.github.io/sitemap.xml

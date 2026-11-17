@@ -323,3 +323,18 @@ html.sans-3d .stage::after {
 @media (max-width: 900px) {
   html.sans-3d .stage::after { left: 50%; right: auto; top: calc(var(--bar) + 1rem); width: min(86vw, 26rem); transform: translateX(-50%); }
 }
+
+/* au doigt : liens assez hauts pour être touchés sans viser (44 px) */
+@media (pointer: coarse) {
+  .link { display: inline-flex; align-items: center; min-height: 44px; }
+  .hero__actions { row-gap: .5rem; }
+}
+
+/* pages simples : mentions légales, page 404 */
+body.simple { background: var(--creme); }
+.simple__main { max-width: 44rem; margin: 0 auto; padding: 3rem var(--pad) 4rem; }
+.simple__main .title { margin-top: 1.5rem; }
+.simple__main .group { margin: 2rem 0 .5rem; }
+.simple__main p { margin: 0 0 1rem; }
+.simple__en { margin-top: 2.5rem !important; font-size: var(--fs-small); color: var(--soft); }
+.foot a { color: inherit; }

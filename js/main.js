@@ -17,6 +17,8 @@ const FILM = new URLSearchParams(location.search).has('film');
 // et la construction de la pièce sont coupés). Passer à true pour le respecter.
 const RESPECT_REDUCED_MOTION = false;
 const reduceMotion = RESPECT_REDUCED_MOTION && matchMedia('(prefers-reduced-motion: reduce)').matches;
+// version douce de ce réglage : pas d'aimant de scroll ni de chute des objets à l'ouverture, le reste est inchangé
+const calmMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const mobile = () => innerWidth <= 900;
 
 const canvas = document.getElementById('room');
@@ -65,8 +67,16 @@ function goTo(el) {
 }
 document.querySelectorAll('a[href^="#"]').forEach((a) => a.addEventListener('click', (e) => {
   const el = document.querySelector(a.getAttribute('href'));
-  if (el) { e.preventDefault(); goTo(el); }
+  if (!el) return;
+  e.preventDefault();
+  if (el.closest('dialog')) el.scrollIntoView({ behavior: 'smooth', block: 'start' });   // lien interne à une fiche
+  else goTo(el);
 }));
+// adresse mail : assemblée ici plutôt qu'écrite en clair dans la page
+document.querySelectorAll('a.mail').forEach((a) => {
+  const m = `${a.dataset.u}@${a.dataset.d}`;
+  a.href = `mailto:${m}`; a.textContent = m;
+});
 
 // ---------- plans de la chambre, un par section ----------
 // Le texte est toujours à gauche, la chambre toujours à droite : elle ne traverse jamais le texte.
@@ -243,7 +253,7 @@ if (renderer) loader.load(new URL('../models/chambre.glb?v=2', import.meta.url).
   renderer.shadowMap.needsUpdate = true;
   buildTimeline();
   // ouverture : la pièce se meuble toute seule au chargement (une fois), si on arrive en haut de page
-  if (FILM || reduceMotion || scrollY > innerHeight * 0.3) P.build = 1;
+  if (FILM || reduceMotion || calmMotion || scrollY > innerHeight * 0.3) P.build = 1;
   else gsap.to(P, { build: 1, duration: 2.1, delay: 0.35, ease: 'none' });
   if (FILM) runFilm();
 }, undefined, (e) => console.error('Chambre non chargée', e));
@@ -383,7 +393,7 @@ let transitions = [], idle, snapping = false;
 if (lenis) {
   lenis.on('scroll', () => {
     clearTimeout(idle);
-    if (snapping || mobile()) return;   // pas d'aimant sur téléphone : les sections y sont plus courtes que l'écran
+    if (snapping || mobile() || calmMotion) return;   // pas d'aimant sur téléphone (sections plus courtes que l'écran) ni si l'utilisateur réduit les animations
     idle = setTimeout(() => {
       const y = lenis.scroll;
       const z = transitions.find((r) => y > r.from + 2 && y < r.to - 2);
