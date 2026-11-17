@@ -176,13 +176,13 @@ const draco = new DRACOLoader();
 draco.setDecoderPath(new URL('../vendor/three/addons/libs/draco/', import.meta.url).href);   // décodeur hébergé sur le site
 const loader = new GLTFLoader(); loader.setDRACOLoader(draco);
 // ombres de contact cuites dans Blender (occlusion ambiante), une image pour toute la pièce, 2e jeu d'UV
-const aoTex = NEW_LOOK && renderer ? new THREE.TextureLoader().load(new URL('../models/chambre-ao.webp', import.meta.url).href) : null;
+const aoTex = NEW_LOOK && renderer ? new THREE.TextureLoader().load(new URL('../models/chambre-ao.webp?v=2', import.meta.url).href) : null;
 if (aoTex) { aoTex.channel = 1; aoTex.flipY = false; aoTex.colorSpace = THREE.NoColorSpace; }
 const aoMats = new Map();   // une copie de matériau par matériau d'origine, avec l'occlusion
 // sol et murs : leurs ombres cuites viennent des objets, elles n'apparaissent qu'une fois les objets posés
 const shellAo = new Set();
 let aoLevel = 0;
-if (renderer) loader.load(new URL('../models/chambre.glb', import.meta.url).href, (gltf) => {
+if (renderer) loader.load(new URL('../models/chambre.glb?v=2', import.meta.url).href, (gltf) => {
   const root = gltf.scene;
   pivot.add(root);
   root.updateMatrixWorld(true);
