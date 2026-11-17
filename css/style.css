@@ -338,3 +338,5 @@ body.simple { background: var(--creme); }
 .simple__main p { margin: 0 0 1rem; }
 .simple__en { margin-top: 2.5rem !important; font-size: var(--fs-small); color: var(--soft); }
 .foot a { color: inherit; }
+.skills__body ul { padding-top: .25rem; }
+.skills__body li .kw { white-space: nowrap; font-weight: 600; }

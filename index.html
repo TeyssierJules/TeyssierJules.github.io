@@ -23,7 +23,7 @@
 <link rel="alternate" hreflang="fr" href="https://teyssierjules.github.io/">
 <link rel="alternate" hreflang="en" href="https://teyssierjules.github.io/en/">
 <link rel="stylesheet" href="vendor/fonts.css">
-<link rel="stylesheet" href="css/style.css?v=audit1">
+<link rel="stylesheet" href="css/style.css?v=competences1">
 <script type="importmap">
 { "imports": {
   "three": "./vendor/three/three.module.min.js",
@@ -105,52 +105,31 @@
     <details>
       <summary><span class="skills__name">Réseau</span><span class="skills__keys">OSPF, BGP, MPLS, VLAN, ACL, Wireshark</span></summary>
       <div class="skills__body">
-        <h3>1re année, les fondamentaux</h3>
-        <ul><li>Modèles OSI et TCP/IP, encapsulation</li><li>Adressage IPv4 et découpage en sous-réseaux</li><li>Ethernet, câblage, switchs et routeurs Cisco</li><li>VLAN, trunk 802.1Q, routage inter-VLAN</li><li>Spanning Tree : STP et RSTP</li><li>Routage statique, puis dynamique avec EIGRP</li><li>Filtrage du trafic par ACL</li><li>NAT et PAT, adressage IPv6</li><li>Relais DHCP sur routeur</li></ul>
-        <h3>2e année, j'ai approfondi</h3>
-        <ul><li>Réseaux de campus : OSPF multi-aires, authentification entre routeurs, élection DR/BDR, redistribution de routes</li><li>Bases du Wi-Fi et de la qualité de service</li><li>Réseaux opérateurs : BGP interne et externe, interconnexion de systèmes autonomes, MPLS</li><li>Analyse de trafic avec Wireshark</li></ul>
-        <h3>En entreprise, chez XEFI</h3>
-        <ul><li>Installation et administration d'un switch sur un site de laboratoire</li><li>Diagnostic d'un automate de laboratoire sans réseau, en remontant son câblage jusqu'au switch</li></ul>
+        <ul><li>Configurer un réseau de campus : VLAN, trunk 802.1Q, routage inter-VLAN, Spanning Tree</li><li>Router en statique et en dynamique : EIGRP, OSPF multi-aires authentifié, BGP, MPLS</li><li>Filtrer par ACL, faire du NAT/PAT, adresser en IPv4 et IPv6</li><li>Analyser du trafic avec Wireshark</li><li>En entreprise : installer un switch sur site, remonter une panne jusqu'au bon port</li></ul>
       </div>
     </details>
     <details>
       <summary><span class="skills__name">Systèmes</span><span class="skills__keys"><button class="kw" type="button" data-modal="modal-ad" title="voir le projet">Active Directory</button>, <button class="kw" type="button" data-modal="modal-ad" title="voir le projet">Windows Server</button>, Debian, Bash, <button class="kw" type="button" data-modal="modal-stormshield" title="voir le projet">LDAP</button>, Apache</span></summary>
       <div class="skills__body">
-        <h3>1re année, les fondamentaux</h3>
-        <ul><li>Linux et Windows en ligne de commande : arborescence, droits, processus, redirections</li><li>Commandes réseau : ping, traceroute, netstat, nmap</li><li>Administration de base : systèmes de fichiers, services, comptes et quotas, lecture des logs</li><li>Premiers scripts pour automatiser des commandes</li><li>Virtualisation et conteneurisation</li><li>Services réseau sous Windows Server et Debian : SSH, DHCP, DNS, HTTP, FTP, NTP</li></ul>
-        <h3>2e année, j'ai approfondi</h3>
-        <ul><li>Services réseau avancés : serveur web Apache, serveur DNS Bind</li><li>Services d'annuaire : LDAP et Active Directory</li><li>Automatisation des tâches d'administration par scripts Bash</li></ul>
-        <h3>En entreprise, chez XEFI</h3>
-        <ul><li>Gestion courante des comptes Active Directory : créations, désactivations, mots de passe, groupes</li><li>Installation et migration de postes de travail</li><li>Installation d'un serveur</li></ul>
+        <ul><li>Administrer Windows Server et Active Directory : comptes, groupes, GPO → <button class="kw" type="button" data-modal="modal-ad" title="voir le projet">audit AD</button></li><li>Monter des services sous Debian et Windows : DNS (Bind), DHCP, SSH, Apache, LDAP</li><li>Automatiser en Bash, virtualiser (Proxmox, VirtualBox)</li><li>En entreprise : installer et migrer des postes, installer un serveur</li></ul>
       </div>
     </details>
     <details>
       <summary><span class="skills__name">Cybersécurité</span><span class="skills__keys"><button class="kw" type="button" data-modal="modal-stormshield" title="voir le projet">Stormshield</button>, <button class="kw" type="button" data-modal="modal-stormshield" title="voir le projet">VPN SSL</button>, <button class="kw" type="button" data-modal="modal-pentest" title="voir le projet">pentesting</button>, <button class="kw" type="button" data-modal="modal-xefi" title="voir le projet">EDR</button>, <button class="kw" type="button" data-modal="modal-ad" title="voir le projet">ANSSI</button>, NIST</span></summary>
       <div class="skills__body">
-        <h3>1re année, les fondamentaux</h3>
-        <ul><li>Hygiène informatique et recommandations de l'ANSSI</li><li>Analyse des vulnérabilités : causes techniques et humaines, cadre NIST, outils de scan et de correctifs</li><li>Attaques réseau de base : usurpation ARP, prise d'empreinte par ICMP</li><li>Filtrage du trafic par ACL</li><li>Failles web : XSS, injections SQL</li></ul>
-        <h3>2e année, j'ai approfondi</h3>
-        <ul><li>Méthodologie du pentesting : reconnaissance, recherche et exploitation de vulnérabilités</li><li>Pare-feu Stormshield : politique de filtrage, sécurisation d'un système d'information</li><li>VPN SSL pour les utilisateurs nomades sur pare-feu Stormshield</li><li>Authentification du routage (OSPF MD5)</li></ul>
-        <h3>En entreprise, chez XEFI</h3>
-        <ul><li>Règles de pare-feu pour des clients du secteur de la santé</li><li>Déploiement d'EDR sur les postes</li><li>Sensibilisation des utilisateurs aux bonnes pratiques</li></ul>
+        <ul><li>Mener un test d'intrusion de bout en bout, jusqu'au score CVSS → <button class="kw" type="button" data-modal="modal-pentest" title="voir le projet">tests d’intrusion</button></li><li>Configurer un pare-feu Stormshield : filtrage, NAT, VPN SSL et IPsec → <button class="kw" type="button" data-modal="modal-stormshield" title="voir le projet">Stormshield</button></li><li>Durcir un Active Directory selon l'ANSSI → <button class="kw" type="button" data-modal="modal-ad" title="voir le projet">audit AD</button></li><li>Superviser et centraliser les journaux : Zabbix, Splunk, Sysmon → <button class="kw" type="button" data-modal="modal-supervision" title="voir le projet">supervision</button></li><li>En entreprise : règles de pare-feu, déploiement d'EDR, sensibilisation des utilisateurs</li></ul>
       </div>
     </details>
     <details>
       <summary><span class="skills__name">Développement</span><span class="skills__keys"><button class="kw" type="button" data-modal="modal-fond-ecran" title="voir le projet">Python</button>, <button class="kw" type="button" data-modal="modal-coffre" title="voir le projet">Java</button>, <button class="kw" type="button" data-modal="modal-coffre" title="voir le projet">SQL</button>, JavaScript, Git</span></summary>
       <div class="skills__body">
-        <h3>1re année, les fondamentaux</h3>
-        <ul><li>Python : variables, structures de contrôle, fonctions, manipulation de fichiers</li><li>Structures de données : dictionnaires, classes, fichiers JSON et CSV, expressions régulières</li><li>Bases de données relationnelles et requêtes SQL</li><li>Web : HTML, CSS, JavaScript, requêtes HTTP, scripts côté serveur</li><li>Suivi de versions avec Git</li></ul>
-        <h3>2e année, j'ai approfondi</h3>
-        <ul><li>Programmation en Java</li><li>Gestion d'une base de données SQL</li><li>Développement d'une application sécurisée en Java : un coffre-fort</li></ul>
+        <ul><li>Automatiser en Python → <button class="kw" type="button" data-modal="modal-fond-ecran" title="voir le projet">fond d’écran iPhone</button></li><li>Développer une application sécurisée en Java avec SQL → <button class="kw" type="button" data-modal="modal-coffre" title="voir le projet">MonCoffreFort</button></li><li>Web (HTML, CSS, JavaScript) et Git</li></ul>
       </div>
     </details>
     <details>
       <summary><span class="skills__name">Télécoms</span><span class="skills__keys">Fibre optique, téléphonie sur IP, réseaux cellulaires, MATLAB</span></summary>
       <div class="skills__body">
-        <h3>1re année, les fondamentaux</h3>
-        <ul><li>Supports de transmission : cuivre, fibre optique, radio. Mesures d'atténuation et recherche de défauts</li><li>Signaux : analyse spectrale, bande passante, bilans de liaison</li><li>Numérisation : échantillonnage, quantification</li><li>Téléphonie d'entreprise : IPBX, téléphonie sur IP</li></ul>
-        <h3>2e année, j'ai approfondi</h3>
-        <ul><li>Chaînes de transmission numériques</li><li>Fibre optique et propagation</li><li>Réseaux d'accès et réseaux cellulaires</li><li>Traitement du signal avec MATLAB</li></ul>
+        <ul><li>Fibre optique : mesures d'atténuation et recherche de défauts</li><li>Téléphonie sur IP et IPBX</li><li>Réseaux cellulaires, chaînes de transmission, traitement du signal sous MATLAB</li></ul>
       </div>
     </details>
   </div>
@@ -680,6 +659,6 @@
   </div>
 </dialog>
 
-<script type="module" src="js/main.js?v=audit1"></script>
+<script type="module" src="js/main.js?v=competences1"></script>
 </body>
 </html>
