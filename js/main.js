@@ -34,6 +34,22 @@ const byKey = (k) => document.querySelector(`.page[data-key="${k}"]`) || documen
 const topBar = document.querySelector('.top');
 const sections = [...document.querySelectorAll('.page')];
 const navLinks = [...document.querySelectorAll('.top__nav a')];
+// téléphone : la liste des sections s'ouvre depuis le bouton Menu de la barre du haut
+const menuBtn = document.querySelector('.menu-btn');
+const menuLabel = menuBtn?.textContent;
+function setMenu(open) {
+  if (!menuBtn) return;
+  document.documentElement.classList.toggle('menu-ouvert', open);
+  menuBtn.setAttribute('aria-expanded', String(open));
+  menuBtn.textContent = open ? '✕' : menuLabel;
+  menuBtn.setAttribute('aria-label', open ? menuBtn.dataset.close : menuLabel);
+}
+menuBtn?.addEventListener('click', () => setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'));
+navLinks.forEach((a) => a.addEventListener('click', () => setMenu(false)));
+addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+document.addEventListener('click', (e) => {
+  if (document.documentElement.classList.contains('menu-ouvert') && !e.target.closest('.top')) setMenu(false);
+});
 
 // ---------- défilement ----------
 const lenis = FILM || reduceMotion ? null : new Lenis({ lerp: 0.24 });   // amorti léger : le défilement reste collé à la molette

@@ -340,3 +340,26 @@ body.simple { background: var(--creme); }
 .foot a { color: inherit; }
 .skills__body ul { padding-top: .25rem; }
 .skills__body li .kw { white-space: nowrap; font-weight: 600; }
+
+/* bouton Menu (téléphone) et liste des sections */
+.menu-btn { display: none; }
+@media (max-width: 900px) {
+  .menu-btn {
+    display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 40px;
+    margin-left: auto; padding: .45rem .9rem; border: 1.5px solid currentColor; border-radius: 999px;
+    background: transparent; color: inherit; font: 600 var(--fs-small)/1 var(--text); cursor: pointer;
+  }
+  .menu-btn + .top__nav + .lamp { margin-left: 0; }
+  html.menu-ouvert .top__nav {
+    display: block; position: fixed; inset: var(--bar) 0 auto 0; z-index: 9;
+    background: var(--bg); color: var(--ink); border-bottom: 1.5px solid var(--line);
+    box-shadow: 0 18px 30px -20px rgb(18 24 49 / .45);
+    padding: .5rem var(--pad) 1rem;
+  }
+  html.menu-ouvert .top__nav ul { flex-direction: column; gap: 0; }
+  html.menu-ouvert .top__nav a {
+    display: flex; align-items: center; min-height: 48px; border-bottom: 1px solid var(--line);
+    font: 600 1.2rem/1.2 var(--display); opacity: 1;
+  }
+  html.menu-ouvert .top__nav li:last-child a { border-bottom: 0; }
+}

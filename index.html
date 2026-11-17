@@ -23,7 +23,7 @@
 <link rel="alternate" hreflang="fr" href="https://teyssierjules.github.io/">
 <link rel="alternate" hreflang="en" href="https://teyssierjules.github.io/en/">
 <link rel="stylesheet" href="vendor/fonts.css">
-<link rel="stylesheet" href="css/style.css?v=competences2">
+<link rel="stylesheet" href="css/style.css?v=menu1">
 <script type="importmap">
 { "imports": {
   "three": "./vendor/three/three.module.min.js",
@@ -40,7 +40,8 @@
 
 <header class="top">
   <a class="top__name" href="#accueil">Jules Teyssier</a>
-  <nav class="top__nav" aria-label="Sections">
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="sections" data-close="Fermer le menu">Menu</button>
+  <nav class="top__nav" id="sections" aria-label="Sections">
     <ul>
       <li><a href="#a-propos">À propos</a></li>
       <li><a href="#formation">Formation</a></li>
@@ -659,6 +660,6 @@
   </div>
 </dialog>
 
-<script type="module" src="js/main.js?v=competences2"></script>
+<script type="module" src="js/main.js?v=menu1"></script>
 </body>
 </html>
