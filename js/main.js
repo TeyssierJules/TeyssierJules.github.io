@@ -156,7 +156,7 @@ const emissiveMats = new Set();
 
 // ---------- objets ----------
 const GROUPS = [
-  { key: 'bureau',    re: /^(Bureau_|Clavier|Souris|Tour_|Tapis$)/,  label: 'Le bureau',      to: 'competences' },
+  { key: 'bureau',    re: /^(Bureau_|Clavier|Souris|Tour_|Tapis$|Lunettes)/,  label: 'Le bureau',      to: 'competences' },
   { key: 'ecran',     re: /^Ecran_/,                                 label: "L'écran",        to: 'projets' },
   { key: 'lampe',     re: /^LampeB_/,                                label: 'La lampe',       action: 'nuit' },
   { key: 'etagere',   re: /^(Etagere|Livre|Cable_RJ45|Plante_|Medaille)/, label: "L'étagère",  to: 'formation' },
@@ -168,6 +168,8 @@ const GROUPS = [
   { key: 'halteres',  re: /^Halteres$/,                              label: 'Les haltères',   to: 'interets' },
 ];
 const SHELL = /^(Sol|Mur_fond|Mur_gauche)$/;
+// objets posés sur un autre : ils montent avec lui au survol
+const CARRIES = { bureau: ['ecran', 'lampe'] };
 const groups = new Map();
 const pickables = [];
 let ready = false, hovered = null, lightsAt = {};
@@ -537,7 +539,8 @@ function renderFrame(dt = 0.016) {
     const start = key === 'shell' ? 0 : 0.12 + (i - 1) * 0.062;
     const p = Math.min(Math.max((P.build - start) / 0.28, 0), 1);
     const drop = key === 'shell' ? 0 : 1 - backOut(p);
-    const lift = lerp(g.lift, key === hovered ? 0.05 : 0, 1 - Math.exp(-dt * 12));
+    const up = key === hovered || CARRIES[hovered]?.includes(key);
+    const lift = lerp(g.lift, up ? 0.05 : 0, 1 - Math.exp(-dt * 12));
     const y = drop * 2.6 + lift + Math.sin(g.hop * Math.PI) * 0.12;
     if (Math.abs(y - g.node.position.y) > 1e-4) moved = true;
     g.lift = lift; g.node.position.y = y;
