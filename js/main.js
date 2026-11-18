@@ -102,15 +102,17 @@ document.querySelectorAll('a.mail').forEach((a) => {
 // elev  : hauteur du regard en degrés (35 = isométrique ; plus haut = plongée ; plus bas = à hauteur d'objet).
 // drift : où le plan arrive pendant la lecture d'une longue section.
 const POSES = {
-  'accueil':        { focus: 'piece',    offX: 0.22, zoom: 1.0,  rot: 0,     elev: 35 },
-  'a-propos':       { focus: 'sac',      offX: 0.15, zoom: 1.45, rot: -0.12, elev: 32 },
-  'formation':      { focus: 'piece',    offX: 0.24, zoom: 1.0,  rot: 0.28,  elev: 46 },
-  'competences':    { focus: 'bureau',   offX: 0.2,  zoom: 1.25, rot: -0.1,  elev: 30 },
-  'projets':        { focus: 'ecran',    offX: 0.19, zoom: 1.4,  rot: 0.15,  elev: 25, drift: { zoom: 1.15, rot: 0.3, elev: 34, offX: 0.22 } },
-  'certifications': { focus: 'piece',    offX: 0.23, zoom: 0.92, rot: -0.25, elev: 62 },
-  'interets':       { focus: 'aquarium', offX: 0.24, zoom: 1.15, rot: 0.32,  elev: 28 },
-  'cv':             { focus: 'piece',    offX: 0.23, zoom: 1.0,  rot: -0.1,  elev: 38 },
-  'contact':        { focus: 'piece',    offX: 0.22, zoom: 1.0,  rot: 0.15,  elev: 35, night: 1 },
+  // la caméra tourne dans un seul sens au fil de la page (rot croissant après À propos),
+  // la hauteur de vue varie peu, et chaque section regarde l'objet qui lui correspond
+  'accueil':        { focus: 'piece',    offX: 0.22, zoom: 1.0,  rot: -0.05, elev: 36 },
+  'a-propos':       { focus: 'sac',      offX: 0.15, zoom: 1.4,  rot: -0.25, elev: 31 },
+  'formation':      { focus: 'etagere',  offX: 0.24, zoom: 1.15, rot: -0.12, elev: 30 },
+  'competences':    { focus: 'bureau',   offX: 0.2,  zoom: 1.25, rot: -0.02, elev: 32 },
+  'projets':        { focus: 'ecran',    offX: 0.19, zoom: 1.35, rot: 0.06,  elev: 27, drift: { zoom: 1.15, rot: 0.16, elev: 32, offX: 0.22 } },
+  'certifications': { focus: 'etagere',  offX: 0.24, zoom: 1.2,  rot: 0.22,  elev: 30 },
+  'interets':       { focus: 'aquarium', offX: 0.24, zoom: 1.2,  rot: 0.3,   elev: 30 },
+  'cv':             { focus: 'piece',    offX: 0.23, zoom: 1.0,  rot: 0.36,  elev: 40 },
+  'contact':        { focus: 'piece',    offX: 0.22, zoom: 0.95, rot: 0.4,   elev: 37, night: 1 },
 };
 const DRIFT = 0.12;
 // téléphone : échelle des plans, gros plans sur les objets, et hauteur du centre de la fenêtre
@@ -261,6 +263,7 @@ if (renderer) loader.load(new URL('../models/chambre.glb?v=2', import.meta.url).
   FOCI.ecran = centerOf('ecran');
   FOCI.etagere = centerOf('etagere');
   FOCI.aquarium = centerOf('aquarium', 'halteres');
+  FOCI.poster = centerOf('poster');
   setupScreen();
   setupTurtle();
   ready = true;
