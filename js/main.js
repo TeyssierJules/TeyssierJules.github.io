@@ -101,18 +101,19 @@ document.querySelectorAll('a.mail').forEach((a) => {
 // rot   : rotation de la pièce (radians, ±0,4 max : au-delà on voit l'arrière des murs).
 // elev  : hauteur du regard en degrés (35 = isométrique ; plus haut = plongée ; plus bas = à hauteur d'objet).
 // drift : où le plan arrive pendant la lecture d'une longue section.
+// close : gros plan (1) : la chambre peut passer sous le texte, qui l'efface en fondu.
 const POSES = {
   // la caméra tourne dans un seul sens au fil de la page (rot croissant après À propos),
   // la hauteur de vue varie peu, et chaque section regarde l'objet qui lui correspond
   'accueil':        { focus: 'piece',    offX: 0.22, zoom: 1.0,  rot: -0.05, elev: 36 },
-  'a-propos':       { focus: 'sac',      offX: 0.15, zoom: 1.4,  rot: -0.25, elev: 31 },
-  'formation':      { focus: 'etagere',  offX: 0.24, zoom: 1.15, rot: -0.12, elev: 30 },
-  'competences':    { focus: 'bureau',   offX: 0.2,  zoom: 1.25, rot: -0.02, elev: 32 },
-  'projets':        { focus: 'ecran',    offX: 0.19, zoom: 1.35, rot: 0.06,  elev: 27, drift: { zoom: 1.15, rot: 0.16, elev: 32, offX: 0.22 } },
-  'certifications': { focus: 'etagere',  offX: 0.24, zoom: 1.2,  rot: 0.22,  elev: 30 },
-  'interets':       { focus: 'aquarium', offX: 0.24, zoom: 1.2,  rot: 0.3,   elev: 30 },
-  'cv':             { focus: 'piece',    offX: 0.23, zoom: 1.0,  rot: 0.36,  elev: 40 },
-  'contact':        { focus: 'piece',    offX: 0.22, zoom: 0.95, rot: 0.4,   elev: 37, night: 1 },
+  'a-propos':       { focus: 'sac',      offX: 0.12, zoom: 2.3,  rot: -0.48, elev: 26, close: 1 },
+  'formation':      { focus: 'etagere',  offX: 0.15, zoom: 1.7,  rot: -0.28, elev: 28, close: 1 },
+  'competences':    { focus: 'bureau',   offX: 0.14, zoom: 1.8,  rot: -0.08, elev: 30, close: 1 },
+  'projets':        { focus: 'ecran',    offX: 0.12, zoom: 2.4,  rot: 0.06,  elev: 22, close: 1, drift: { zoom: 1.6, rot: 0.22, elev: 30, offX: 0.16 } },
+  'certifications': { focus: 'etagere',  offX: 0.15, zoom: 1.8,  rot: 0.34,  elev: 28, close: 1 },
+  'interets':       { focus: 'aquarium', offX: 0.13, zoom: 2.1,  rot: 0.48,  elev: 26, close: 1 },
+  'cv':             { focus: 'piece',    offX: 0.23, zoom: 1.0,  rot: 0.56,  elev: 40 },
+  'contact':        { focus: 'piece',    offX: 0.22, zoom: 0.95, rot: 0.6,   elev: 37, night: 1 },
 };
 const DRIFT = 0.12;
 // téléphone : échelle des plans, gros plans sur les objets, et hauteur du centre de la fenêtre
@@ -120,7 +121,7 @@ const MOB_ZOOM = 0.6, MOB_ROT = 1.6, MOB_OFFY = 0.2;   // téléphone : vue d'en
 
 const FOCI = { piece: new THREE.Vector3(0, 1.0, 0) };     // complété au chargement (centre de chaque objet)
 
-const P = { fx: 0, fy: 1, fz: 0, offX: POSES.accueil.offX, zoom: 1, rot: 0, elev: 35, night: 0, build: reduceMotion ? 1 : 0 };
+const P = { fx: 0, fy: 1, fz: 0, offX: POSES.accueil.offX, zoom: 1, rot: 0, elev: 35, night: 0, close: 0, build: reduceMotion ? 1 : 0 };
 window.__P = P;   // debug
 
 // ---------- rendu ----------
@@ -159,7 +160,8 @@ const HALF = 2.95;                         // demi-hauteur visible à zoom 1 (un
 const ROOM_CORNERS = [];
 for (const x of [-1.66, 1.62]) for (const y of [-0.2, 2.62]) for (const z of [-1.62, 1.66]) ROOM_CORNERS.push(new THREE.Vector3(x, y, z));
 const tmpV = new THREE.Vector3();
-let textEdge = 0.45;                       // bord droit de la colonne de texte (fraction de l'écran), mesuré au chargement
+let textEdge = 0.45;
+let lastFond = -1, lastEdge = -1;                       // bord droit de la colonne de texte (fraction de l'écran), mesuré au chargement
 
 const pivot = new THREE.Group(); scene.add(pivot);       // tout ce qui tourne avec la pièce
 const hemi = new THREE.HemisphereLight('#fff8ec', '#c9a77c', 1.5); scene.add(hemi);
@@ -352,7 +354,7 @@ function buildTimeline() {
     const m = mobile();
     const f = (m ? null : FOCI[p.focus]) || FOCI.piece;   // téléphone : toujours la pièce entière
     return {
-      fx: f.x, fy: f.y, fz: f.z, rot: p.rot, elev: p.elev, night: p.night || 0,
+      fx: f.x, fy: f.y, fz: f.z, rot: p.rot, elev: p.elev, night: p.night || 0, close: m ? 0 : p.close || 0,
       offX: m ? 0 : p.offX,
       zoom: m ? MOB_ZOOM * (p.focus === 'piece' ? 1 : 1.12) : p.zoom,
       ...(m && { rot: p.rot * MOB_ROT, elev: 35 + (p.elev - 35) * 0.6 }),
@@ -542,7 +544,15 @@ function renderFrame(dt = 0.016) {
     }
     const halfW = HALF * a / z;                                // demi-largeur visible
     const minLeft = (textEdge - 0.5) * 2 * halfW;              // le bord du texte, dans le même repère
-    if (left < minLeft) target.addScaledVector(RIGHT, left - minLeft);
+    // gros plan (close) : la chambre a le droit de passer sous le texte, qui reste lisible grâce au fondu
+    if (left < minLeft) target.addScaledVector(RIGHT, (left - minLeft) * (1 - P.close));
+  }
+  // fondu de la chambre sous la colonne de texte, seulement pendant les gros plans
+  const fond = mobile() ? 1 : 1 - 0.92 * P.close;
+  if (Math.abs(fond - lastFond) > 0.002 || textEdge !== lastEdge) {
+    lastFond = fond; lastEdge = textEdge;
+    canvas.style.setProperty('--fond', fond.toFixed(3));
+    canvas.style.setProperty('--bord', (textEdge * 100).toFixed(1) + '%');
   }
   camera.position.copy(target).addScaledVector(DIR, 30);
   camera.lookAt(target);

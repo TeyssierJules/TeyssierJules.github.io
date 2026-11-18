@@ -75,6 +75,11 @@ a:hover { text-decoration-thickness: 2px; }
 /* ---------- chambre 3D ---------- */
 .stage { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 .stage canvas { display: block; width: 100%; height: 100%; pointer-events: auto; }
+/* gros plans : la chambre s'efface sous la colonne de texte (--fond et --bord réglés par main.js) */
+.stage canvas {
+  -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,var(--fond, 1)) var(--bord, 45%), #000 calc(var(--bord, 45%) + 10vw));
+          mask-image: linear-gradient(to right, rgba(0,0,0,var(--fond, 1)) var(--bord, 45%), #000 calc(var(--bord, 45%) + 10vw));
+}
 .stage__hint {
   position: absolute; bottom: 1.25rem; right: var(--pad); margin: 0;
   padding: .35rem .8rem; border-radius: 999px; white-space: nowrap;
